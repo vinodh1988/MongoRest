@@ -23,6 +23,22 @@ route.get('/all/:cname',function(request,response){
     })
 });
 
+route.get('/all-regex/:cname',function(request,response){
+ 
+  model.find({country_name:{$regex:request.params.cname,$options:'i'}},{_id:0},
+      function(err,data){
+      if(err)
+      {
+        console.log(err);
+        response.json({countries:[]});
+      }
+      else
+      {
+        console.log("Data is..."+data);
+        response.json({countries:data});
+      }
+  })
+});
 route.put('/change/:country',function(request,response){
      let country=request.params.country;
      model.update({country_name:country},{$set:request.body},
